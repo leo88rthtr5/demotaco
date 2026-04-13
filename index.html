@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Puebla Delivery | El Auténtico Trompo al Pastor</title>
+  <meta name="description" content="Pide los mejores tacos al pastor en Puebla. Carne 100% calidad, salsas artesanales y entrega rápida en 30-40 min.">
+  <meta name="theme-color" content="#0a0a0a">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --orange: #f97316;
+      --orange-glow: rgba(249,115,22,0.4);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── ANIMATIONS ───────────────────────── */
+    @keyframes textShimmer {
+      0%   { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+    @keyframes pulseRing {
+      0%   { box-shadow: 0 0 0 0 var(--orange-glow); }
+      70%  { box-shadow: 0 0 0 18px transparent; }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── TEXT FIRE ────────────────────────── */
+    .text-fire {
+      background: linear-gradient(135deg, #fbbf24 0%, #f97316 30%, #ef4444 60%, #f97316 80%, #fbbf24 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+      animation: textShimmer 4s linear infinite;
+    }
+
+    /* ── REVEAL ───────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.7s cubic-bezier(.16,1,.3,1), transform 0.7s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* ── GLASS ────────────────────────────── */
+    .glass {
+      backdrop-filter: blur(16px) saturate(1.4);
+      -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    }
+
+    /* ── NAVBAR ───────────────────────────── */
+    #navbar {
+      transform: translateY(-100%);
+      transition: transform 0.4s cubic-bezier(.16,1,.3,1);
+    }
+    #navbar.visible { transform: translateY(0); }
+
+    /* ── CARD HOVER ───────────────────────── */
+    .card-lift {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card-lift:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 24px 60px -12px rgba(0,0,0,0.5);
+    }
+    @media (hover: none) {
+      .card-lift:hover { transform: none; box-shadow: none; }
+    }
+
+    /* ── MARQUEE ──────────────────────────── */
+    .marquee-track { animation: marquee 20s linear infinite; }
+
+    /* ── WA FLOAT ─────────────────────────── */
+    #wa-float { animation: floatY 2.8s ease-in-out infinite; }
+
+    /* ── PULSE BTN ────────────────────────── */
+    .btn-pulse { animation: pulseRing 2.5s infinite; }
+
+    /* ── RADIAL MASK ──────────────────────── */
+    .radial-mask {
+      background: radial-gradient(circle at center, transparent 0%, rgba(10,10,10,.75) 40%, #0a0a0a 100%);
+    }
+
+    /* ── SCROLLBAR ────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--orange); border-radius: 4px; }
+  </style>
+</head>
+<body class="text-zinc-200 selection:bg-orange-500/30 selection:text-orange-200 overflow-x-hidden antialiased">
+
+  <!-- ── PROMO BANNER ──────────────────── -->
+  <div class="bg-orange-500 py-2 px-4 text-center overflow-hidden" role="banner">
+    <div class="flex gap-10 whitespace-nowrap marquee-track text-xs sm:text-sm font-black text-black uppercase tracking-wide">
+      <span>🌮 ENVÍO GRATIS en pedidos +$200 &bull;</span>
+      <span>⚡ Entrega 30-40 min &bull;</span>
+      <span>🔥 Abierto Martes-Domingo 1PM–12:30AM &bull;</span>
+      <span>🌮 ENVÍO GRATIS en pedidos +$200 &bull;</span>
+      <span>⚡ Entrega 30-40 min &bull;</span>
+      <span>🔥 Abierto Martes-Domingo 1PM–12:30AM &bull;</span>
+    </div>
+  </div>
+
+  <!-- ── STICKY NAVBAR ──────────────────── -->
+  <nav id="navbar" class="fixed top-0 inset-x-0 z-50 glass border-b border-white/5 bg-black/75" aria-label="Navegación principal">
+    <div class="container mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
+      <a href="#" class="flex items-center gap-2">
+        <span class="text-2xl" aria-hidden="true">🌮</span>
+        <span class="font-black text-white">Trompo<span class="text-orange-500">Pastor</span></span>
+      </a>
+      <div class="hidden items-center gap-8 text-sm font-medium text-zinc-400 md:flex">
+        <a href="#nosotros" class="hover:text-white transition-colors">Nosotros</a>
+        <a href="#menu-title" class="hover:text-white transition-colors">Menú</a>
+        <a href="#testimonios" class="hover:text-white transition-colors">Reseñas</a>
+      </div>
+      <button class="js-order group flex items-center gap-2 rounded-full bg-orange-500 px-4 py-2 text-sm font-black text-black transition-all hover:bg-white active:scale-95">
+        <span>Pedir ahora</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.554 4.118 1.524 5.847L0 24l6.338-1.499A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.806 9.806 0 0 1-5.023-1.375l-.36-.214-3.728.882.93-3.627-.234-.373A9.791 9.791 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ── HERO ──────────────────────────── -->
+    <section id="hero" class="relative min-h-[100svh] overflow-hidden flex items-center justify-center text-center px-5 py-24 sm:px-8 sm:py-28" aria-labelledby="hero-title">
+
+      <!-- Background -->
+      <div class="absolute inset-0 z-0" aria-hidden="true">
+        <img id="hero-img"
+          src="https://images.unsplash.com/photo-1634626127111-b9691b8d2a23?q=80&w=1920&auto=format&fit=crop"
+          alt="Trompo al pastor cocinándose a fuego lento"
+          class="h-full w-full object-cover brightness-[0.22] will-change-transform"
+          loading="eager" fetchpriority="high">
+        <div class="absolute inset-0 radial-mask"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-orange-500/5 blur-[130px] pointer-events-none"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="relative z-10 w-full max-w-5xl mx-auto">
+
+        <!-- Badge -->
+        <div class="reveal inline-flex items-center gap-2.5 rounded-full border border-orange-500/30 bg-orange-500/10 px-4 py-2 mb-8 glass">
+          <span class="h-2 w-2 animate-pulse rounded-full bg-green-400"></span>
+          <span class="text-xs font-bold uppercase tracking-widest text-orange-300">Puebla Delivery • Abierto ahora</span>
+        </div>
+
+        <!-- Headline — clamp() ensures fluid font across all screens -->
+        <h1 id="hero-title" class="reveal font-black leading-[0.95] text-white tracking-tighter"
+            style="font-size: clamp(2.6rem, 11vw, 7.5rem);">
+          El sabor real<br>del
+          <span class="text-fire italic"> trompo<br class="sm:hidden"> al pastor.</span>
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="reveal mt-8 max-w-2xl mx-auto text-base sm:text-xl leading-relaxed text-zinc-300">
+          Olvídate de cocinar. Carne jugosa, piña en su punto y salsas artesanales
+          <strong class="text-white font-semibold"> sin moverte del sofá.</strong>
+        </p>
+
+        <!-- Stats row -->
+        <div class="reveal mt-10 flex flex-wrap items-center justify-center gap-5 sm:gap-10 text-sm text-zinc-300">
+          <div class="flex items-center gap-2"><span class="text-xl" aria-hidden="true">⭐</span><span><b class="text-white">4.9</b> (238 reseñas)</span></div>
+          <div class="hidden sm:block h-4 w-px bg-white/20"></div>
+          <div class="flex items-center gap-2"><span class="text-xl" aria-hidden="true">⚡</span><span><b class="text-white">30-40 min</b> entrega</span></div>
+          <div class="hidden sm:block h-4 w-px bg-white/20"></div>
+          <div class="flex items-center gap-2"><span class="text-xl" aria-hidden="true">📍</span><span>Puebla, Santa María</span></div>
+        </div>
+
+        <!-- CTAs -->
+        <div class="reveal mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 pb-4">
+          <button class="js-order btn-pulse w-full sm:w-auto group relative overflow-hidden rounded-2xl bg-orange-500 px-10 py-5 text-lg font-black text-black transition-all hover:shadow-[0_0_50px_rgba(249,115,22,0.5)] active:scale-95">
+            <span class="relative z-10 flex items-center justify-center gap-3 pointer-events-none">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.554 4.118 1.524 5.847L0 24l6.338-1.499A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.806 9.806 0 0 1-5.023-1.375l-.36-.214-3.728.882.93-3.627-.234-.373A9.791 9.791 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+              Quiero mis tacos AHORA
+            </span>
+            <div class="absolute inset-0 z-0 -translate-y-full bg-white transition-transform duration-300 group-hover:translate-y-0" aria-hidden="true"></div>
+          </button>
+          <a href="#menu-title" class="w-full sm:w-auto flex items-center justify-center gap-2 rounded-2xl border border-white/15 px-10 py-5 text-lg font-bold text-white transition-all hover:bg-white/5 active:scale-95">
+            Ver menú
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Bottom fade -->
+      <div class="absolute bottom-0 inset-x-0 h-40 bg-gradient-to-t from-[#0a0a0a] to-transparent z-10 pointer-events-none" aria-hidden="true"></div>
+    </section>
+
+    <!-- ── MARQUEE STRIP ───────────────── -->
+    <div class="border-y border-white/5 bg-[#0d0d0d] py-3 overflow-hidden" aria-hidden="true">
+      <div class="flex gap-10 whitespace-nowrap marquee-track text-xs font-bold text-zinc-500 uppercase tracking-widest">
+        <span>Pastor 🌮</span><span>Gringas 🧀</span><span>Trompo auténtico 🔥</span>
+        <span>Carne calidad 🥩</span><span>Salsa de árbol 🌶️</span><span>Piña caramelizada 🍍</span>
+        <span>Entrega Puebla 📍</span><span>Pastor 🌮</span><span>Gringas 🧀</span>
+        <span>Trompo auténtico 🔥</span><span>Carne calidad 🥩</span><span>Salsa de árbol 🌶️</span>
+        <span>Piña caramelizada 🍍</span><span>Entrega Puebla 📍</span>
+      </div>
+    </div>
+
+    <!-- ── FEATURES ────────────────────── -->
+    <section id="nosotros" class="py-20 sm:py-28 px-5 sm:px-8 bg-[#0d0d0d]" aria-label="Por qué elegirnos">
+      <div class="container mx-auto max-w-6xl">
+        <div class="reveal mb-16 text-center">
+          <p class="text-xs font-bold uppercase tracking-widest text-orange-500 mb-3">¿Por qué nosotros?</p>
+          <h2 class="text-3xl sm:text-5xl font-black text-white tracking-tight">Del trompo a tu puerta.</h2>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <!-- Card 1 -->
+          <article class="reveal card-lift group rounded-3xl border border-white/5 bg-white/[0.025] p-7">
+            <div class="mb-5 h-14 w-14 flex items-center justify-center rounded-2xl bg-orange-500/10 text-orange-500 transition-all duration-300 group-hover:bg-orange-500 group-hover:text-black group-hover:scale-110">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8a8 8 0 0 1-10 10Z"/><path d="M18 22s-1-2-1-3.5c0-1.5 1-3.5 1-3.5"/><path d="M15 22s-1-2-1-3.5c0-1.5 1-3.5 1-3.5"/></svg>
+            </div>
+            <h3 class="mb-2 text-xl font-bold text-white">Carne 100% Calidad</h3>
+            <p class="text-zinc-400 text-sm leading-relaxed">Marinada con receta secreta y cortada directo del trompo. Sin recalentados, sin trampa.</p>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="reveal card-lift group rounded-3xl border border-white/5 bg-white/[0.025] p-7">
+            <div class="mb-5 h-14 w-14 flex items-center justify-center rounded-2xl bg-red-500/10 text-red-500 transition-all duration-300 group-hover:bg-red-500 group-hover:text-black group-hover:scale-110">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.292 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+            </div>
+            <h3 class="mb-2 text-xl font-bold text-white">Salsas que sí pican</h3>
+            <p class="text-zinc-400 text-sm leading-relaxed">Roja de chile de árbol o verde cremosa. Tú eliges la intensidad del picor.</p>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="reveal card-lift group rounded-3xl border border-white/5 bg-white/[0.025] p-7">
+            <div class="mb-5 h-14 w-14 flex items-center justify-center rounded-2xl bg-blue-500/10 text-blue-500 transition-all duration-300 group-hover:bg-blue-500 group-hover:text-black group-hover:scale-110">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 class="mb-2 text-xl font-bold text-white">Empaque Térmico</h3>
+            <p class="text-zinc-400 text-sm leading-relaxed">Tecnología que mantiene la tortilla suave y la carne caliente hasta tu mesa.</p>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="reveal card-lift group rounded-3xl border border-white/5 bg-white/[0.025] p-7">
+            <div class="mb-5 h-14 w-14 flex items-center justify-center rounded-2xl bg-green-500/10 text-green-500 transition-all duration-300 group-hover:bg-green-500 group-hover:text-black group-hover:scale-110">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <h3 class="mb-2 text-xl font-bold text-white">Pago Fácil</h3>
+            <p class="text-zinc-400 text-sm leading-relaxed">Efectivo, transferencia o pago contra entrega. Sin complicaciones.</p>
+          </article>
+
+          <!-- Card 5 — wide on lg -->
+          <article class="reveal card-lift group rounded-3xl border border-white/5 bg-white/[0.025] p-7 sm:col-span-2 lg:col-span-2">
+            <div class="mb-5 h-14 w-14 flex items-center justify-center rounded-2xl bg-purple-500/10 text-purple-500 transition-all duration-300 group-hover:bg-purple-500 group-hover:text-black group-hover:scale-110">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h3 class="mb-2 text-xl font-bold text-white">Entrega Express</h3>
+            <p class="text-zinc-400 text-sm leading-relaxed">30-40 minutos en promedio. Te notificamos el estatus de tu pedido directamente por WhatsApp para que nunca pierdas de vista tu orden.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MENU ──────────────────────────── -->
+    <section class="py-20 sm:py-28 px-5 sm:px-8" aria-labelledby="menu-title">
+      <div class="container mx-auto max-w-5xl">
+        <div class="reveal mb-16 text-center">
+          <p class="text-xs font-bold uppercase tracking-widest text-orange-500 mb-3">Lo más pedido</p>
+          <h2 id="menu-title" class="text-3xl sm:text-5xl font-black text-white tracking-tight">Favoritos del Trompo</h2>
+        </div>
+
+        <div class="flex flex-col gap-5">
+
+          <!-- Item 1 -->
+          <article class="reveal group flex flex-col sm:flex-row items-center gap-5 rounded-[2rem] border border-white/5 bg-zinc-900/60 p-5 sm:p-6 transition-all hover:border-orange-500/30 hover:bg-zinc-800/60 active:scale-[0.99]">
+            <div class="relative h-28 w-28 sm:h-32 sm:w-32 shrink-0 overflow-hidden rounded-[1.5rem] bg-orange-500/20">
+              <img src="https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?q=80&w=200&auto=format&fit=crop" alt="Orden de 5 tacos al pastor" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
+              <div class="absolute top-2 left-2 rounded-full bg-orange-500 px-2 py-0.5 text-[10px] font-black text-black">⭐ TOP</div>
+            </div>
+            <div class="flex-grow text-center sm:text-left">
+              <h4 class="text-xl sm:text-2xl font-bold text-white">Orden de Tacos (5 pzas)</h4>
+              <p class="mt-1 text-zinc-400 text-sm">Cebollita, cilantro y piña caramelizada.</p>
+              <div class="mt-3 flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                <span class="rounded-full border border-orange-500/20 bg-orange-500/10 px-3 py-1 text-xs text-orange-400">🌮 5 piezas</span>
+                <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-zinc-400">Salsa incluida</span>
+              </div>
+            </div>
+            <div class="flex flex-col items-center sm:items-end gap-3 shrink-0">
+              <span class="text-2xl sm:text-3xl font-black text-orange-500" aria-label="95 pesos">$95</span>
+              <button class="js-order w-full sm:w-auto rounded-xl border border-orange-500/30 bg-orange-500/10 px-5 py-2.5 text-sm font-bold text-orange-400 transition-all hover:bg-orange-500 hover:text-black active:scale-95">Pedir →</button>
+            </div>
+          </article>
+
+          <!-- Item 2 -->
+          <article class="reveal group flex flex-col sm:flex-row items-center gap-5 rounded-[2rem] border border-white/5 bg-zinc-900/60 p-5 sm:p-6 transition-all hover:border-orange-500/30 hover:bg-zinc-800/60 active:scale-[0.99]">
+            <div class="relative h-28 w-28 sm:h-32 sm:w-32 shrink-0 overflow-hidden rounded-[1.5rem] bg-orange-500/20">
+              <img src="https://images.unsplash.com/photo-1624300629298-e9de39c13be5?q=80&w=200&auto=format&fit=crop" alt="Gringa de pastor con queso fundido" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
+              <div class="absolute top-2 left-2 rounded-full bg-red-500 px-2 py-0.5 text-[10px] font-black text-white">🔥 HOT</div>
+            </div>
+            <div class="flex-grow text-center sm:text-left">
+              <h4 class="text-xl sm:text-2xl font-bold text-white">Gringas de Pastor</h4>
+              <p class="mt-1 text-zinc-400 text-sm">Tortilla de harina con queso fundido y carne al pastor.</p>
+              <div class="mt-3 flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                <span class="rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-xs text-red-400">🧀 Queso fundido</span>
+                <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-zinc-400">Tortilla grande</span>
+              </div>
+            </div>
+            <div class="flex flex-col items-center sm:items-end gap-3 shrink-0">
+              <span class="text-2xl sm:text-3xl font-black text-orange-500" aria-label="65 pesos">$65</span>
+              <button class="js-order w-full sm:w-auto rounded-xl border border-orange-500/30 bg-orange-500/10 px-5 py-2.5 text-sm font-bold text-orange-400 transition-all hover:bg-orange-500 hover:text-black active:scale-95">Pedir →</button>
+            </div>
+          </article>
+
+          <!-- Item 3 — Combo -->
+          <article class="reveal group flex flex-col sm:flex-row items-center gap-5 rounded-[2rem] border border-green-500/20 bg-green-500/5 p-5 sm:p-6 transition-all hover:bg-green-500/10 active:scale-[0.99]">
+            <div class="relative h-28 w-28 sm:h-32 sm:w-32 shrink-0 overflow-hidden rounded-[1.5rem] bg-green-500/10">
+              <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?q=80&w=200&auto=format&fit=crop" alt="Combo familiar de tacos al pastor" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" loading="lazy">
+              <div class="absolute top-2 left-2 rounded-full bg-green-500 px-2 py-0.5 text-[10px] font-black text-black">💰 OFERTA</div>
+            </div>
+            <div class="flex-grow text-center sm:text-left">
+              <h4 class="text-xl sm:text-2xl font-bold text-white">Combo Familiar (20 pzas)</h4>
+              <p class="mt-1 text-zinc-400 text-sm">El combo perfecto para compartir. Incluye 2 salsas y refrescos.</p>
+              <div class="mt-3 flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                <span class="rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1 text-xs text-green-400">👨‍👩‍👧‍👦 4-5 personas</span>
+                <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-zinc-400">Mejor precio/pieza</span>
+              </div>
+            </div>
+            <div class="flex flex-col items-center sm:items-end gap-3 shrink-0">
+              <span class="text-2xl sm:text-3xl font-black text-orange-500" aria-label="340 pesos">$340</span>
+              <button class="js-order w-full sm:w-auto rounded-xl border border-green-500/30 bg-green-500/10 px-5 py-2.5 text-sm font-bold text-green-400 transition-all hover:bg-green-500 hover:text-black active:scale-95">Pedir →</button>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="reveal mt-10 text-center">
+          <p class="text-zinc-500 text-sm mb-4">¿Quieres algo diferente? Escríbenos directo.</p>
+          <button class="js-order rounded-full border border-white/15 px-8 py-3 text-sm font-bold text-white transition-all hover:bg-white/5 active:scale-95">
+            Ver menú completo en WhatsApp →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TESTIMONIALS ────────────────── -->
+    <section id="testimonios" class="py-20 sm:py-28 px-5 sm:px-8 bg-[#0d0d0d]" aria-labelledby="testimonios-title">
+      <div class="container mx-auto max-w-5xl">
+        <div class="reveal mb-16 text-center">
+          <p class="text-xs font-bold uppercase tracking-widest text-orange-500 mb-3">Lo que dicen</p>
+          <h2 id="testimonios-title" class="text-3xl sm:text-5xl font-black text-white tracking-tight">Clientes que repiten.</h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          <blockquote class="reveal card-lift rounded-3xl border border-white/5 bg-white/[0.025] p-7">
+            <div class="flex gap-0.5 mb-4 text-orange-500 text-lg" aria-label="5 estrellas">★★★★★</div>
+            <p class="text-zinc-300 text-sm leading-relaxed mb-5">"El mejor pastor que he probado en Puebla. La piña caramelizada es un nivel aparte. Ya pedí 3 veces esta semana 😅"</p>
+            <footer class="flex items-center gap-3">
+              <div class="h-9 w-9 rounded-full bg-orange-500/20 flex items-center justify-center text-sm font-bold text-orange-400" aria-hidden="true">MC</div>
+              <div>
+                <cite class="not-italic text-sm font-semibold text-white">María C.</cite>
+                <p class="text-xs text-zinc-500">Colonia La Paz</p>
+              </div>
+            </footer>
+          </blockquote>
+
+          <blockquote class="reveal card-lift rounded-3xl border border-white/5 bg-white/[0.025] p-7">
+            <div class="flex gap-0.5 mb-4 text-orange-500 text-lg" aria-label="5 estrellas">★★★★★</div>
+            <p class="text-zinc-300 text-sm leading-relaxed mb-5">"Llegaron en 28 minutos y la tortilla estaba suave como si la acabaran de hacer. Eso fue lo que me enamoró del servicio."</p>
+            <footer class="flex items-center gap-3">
+              <div class="h-9 w-9 rounded-full bg-blue-500/20 flex items-center justify-center text-sm font-bold text-blue-400" aria-hidden="true">JR</div>
+              <div>
+                <cite class="not-italic text-sm font-semibold text-white">Jorge R.</cite>
+                <p class="text-xs text-zinc-500">Villa Posadas</p>
+              </div>
+            </footer>
+          </blockquote>
+
+          <blockquote class="reveal card-lift rounded-3xl border border-white/5 bg-white/[0.025] p-7 sm:col-span-2 lg:col-span-1">
+            <div class="flex gap-0.5 mb-4 text-orange-500 text-lg" aria-label="5 estrellas">★★★★★</div>
+            <p class="text-zinc-300 text-sm leading-relaxed mb-5">"Las gringas con salsa roja son adictivas. El servicio por WhatsApp es rápido y amable. 100% recomendado para toda la familia."</p>
+            <footer class="flex items-center gap-3">
+              <div class="h-9 w-9 rounded-full bg-green-500/20 flex items-center justify-center text-sm font-bold text-green-400" aria-hidden="true">AL</div>
+              <div>
+                <cite class="not-italic text-sm font-semibold text-white">Ana L.</cite>
+                <p class="text-xs text-zinc-500">Centro Histórico</p>
+              </div>
+            </footer>
+          </blockquote>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FINAL CTA ───────────────────── -->
+    <section class="py-24 sm:py-36 px-5 sm:px-8 relative overflow-hidden">
+      <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full bg-orange-500/5 blur-[100px]"></div>
+      </div>
+      <div class="container mx-auto max-w-3xl text-center relative z-10">
+        <p class="reveal text-6xl sm:text-8xl mb-6" aria-hidden="true">🌮</p>
+        <h2 class="reveal text-3xl sm:text-6xl font-black text-white tracking-tight mb-5">¿Hambre de la buena?</h2>
+        <p class="reveal text-zinc-400 text-lg mb-10">El trompo está girando. Tu orden puede estar lista en minutos.</p>
+        <button class="js-order reveal group inline-flex items-center gap-3 rounded-2xl bg-[#25D366] px-8 sm:px-12 py-5 text-lg sm:text-xl font-black text-white transition-all hover:scale-105 hover:shadow-[0_0_50px_rgba(37,211,102,0.4)] active:scale-95">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.554 4.118 1.524 5.847L0 24l6.338-1.499A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.806 9.806 0 0 1-5.023-1.375l-.36-.214-3.728.882.93-3.627-.234-.373A9.791 9.791 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+          PEDIR POR WHATSAPP
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ──────────────────────────── -->
+  <footer class="bg-black border-t border-white/5 py-16 px-5 sm:px-8">
+    <div class="container mx-auto max-w-6xl">
+
+      <div class="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-8 mb-12">
+        <div class="text-center sm:text-left">
+          <div class="flex items-center gap-2 justify-center sm:justify-start mb-2">
+            <span class="text-3xl" aria-hidden="true">🌮</span>
+            <span class="text-2xl font-black text-white">Trompo<span class="text-orange-500">Pastor</span></span>
+          </div>
+          <p class="text-zinc-500 text-sm max-w-xs">El auténtico trompo al pastor con delivery en Puebla.</p>
+        </div>
+        <div class="flex gap-3">
+          <a href="#" class="h-10 w-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-white/10 transition-all" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="h-10 w-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-white/10 transition-all" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="#" class="h-10 w-10 rounded-xl bg-[#25D366]/10 border border-[#25D366]/20 flex items-center justify-center text-[#25D366] hover:bg-[#25D366] hover:text-white transition-all" aria-label="WhatsApp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.554 4.118 1.524 5.847L0 24l6.338-1.499A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.806 9.806 0 0 1-5.023-1.375l-.36-.214-3.728.882.93-3.627-.234-.373A9.791 9.791 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-white/5 pt-10 text-center sm:text-left">
+        <div>
+          <h5 class="mb-3 text-xs font-bold uppercase tracking-widest text-zinc-500">Ubicación</h5>
+          <address class="not-italic text-white text-sm leading-relaxed">Calle 7 Nte. 4802<br>Col. Santa María, Puebla</address>
+        </div>
+        <div>
+          <h5 class="mb-3 text-xs font-bold uppercase tracking-widest text-zinc-500">Horarios</h5>
+          <p class="text-white text-sm leading-relaxed">Martes a Domingo<br>1:00 PM — 12:30 AM</p>
+          <p class="text-zinc-500 text-xs mt-1">Lunes: Cerrado</p>
+        </div>
+        <div>
+          <h5 class="mb-3 text-xs font-bold uppercase tracking-widest text-zinc-500">Zona de Entrega</h5>
+          <p class="text-white text-sm leading-relaxed">Centro, Villa Posadas,<br>Santa María y alrededores.</p>
+        </div>
+      </div>
+
+      <div class="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-600">
+        <p>© 2025 TromPastor Puebla. Todos los derechos reservados.</p>
+        <p class="text-zinc-700">Hecho con ❤️ en Puebla, México</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── FLOATING WA BUTTON (desktop only) ── -->
+  <div id="wa-float" class="hidden sm:block fixed bottom-6 right-6 z-50">
+    <button class="js-order group flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] shadow-[0_8px_32px_rgba(37,211,102,0.4)] transition-all hover:scale-110 active:scale-95" aria-label="Pedir por WhatsApp">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.554 4.118 1.524 5.847L0 24l6.338-1.499A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.806 9.806 0 0 1-5.023-1.375l-.36-.214-3.728.882.93-3.627-.234-.373A9.791 9.791 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+    </button>
+  </div>
+
+  <!-- ── MOBILE STICKY BOTTOM BAR ─────────── -->
+  <!-- Stays always visible on mobile — máxima conversión en touch -->
+  <div class="fixed bottom-0 inset-x-0 z-50 sm:hidden glass border-t border-white/10 bg-black/90 px-4 py-3" style="padding-bottom: max(12px, env(safe-area-inset-bottom));">
+    <button class="js-order w-full flex items-center justify-center gap-3 rounded-xl bg-[#25D366] py-4 text-base font-black text-white transition-all active:scale-95" aria-label="Pedir por WhatsApp">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.554 4.118 1.524 5.847L0 24l6.338-1.499A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.806 9.806 0 0 1-5.023-1.375l-.36-.214-3.728.882.93-3.627-.234-.373A9.791 9.791 0 0 1 2.182 12C2.182 6.58 6.58 2.182 12 2.182S21.818 6.58 21.818 12 17.42 21.818 12 21.818z"/></svg>
+      PEDIR POR WHATSAPP
+    </button>
+  </div>
+
+<!-- ── THE KNIGHT CODE — DEMO BADGE ─────── -->
+<div class="relative z-40 border-t border-white/10 bg-black/95 py-6 px-5 text-center glass">
+  <p class="text-sm text-zinc-400 mb-1">
+    Este es un <span class="text-orange-400 font-bold">sitio demo</span>
+  </p>
+  <p class="text-sm text-zinc-400 mb-4">¿Quieres una página web similar para tu negocio?</p>
+  <a href="https://theknightcode.vercel.app/" 
+     target="_blank" 
+     rel="noopener noreferrer"
+     class="inline-flex items-center gap-2 rounded-full bg-orange-500 px-6 py-3 text-sm font-black text-black transition-all hover:bg-white hover:scale-105 active:scale-95">
+    Contactar al desarrollador →
+  </a>
+  <p class="mt-4 text-xs text-zinc-600">
+    Desarrollado por 
+    <a href="https://theknightcode.vercel.app/" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="text-orange-500 font-bold hover:text-orange-400 transition-colors">
+      The Knight Code
+    </a>
+  </p>
+</div>
+
+  <script>
+    "use strict";
+
+    (() => {
+      const CONFIG = {
+        phone: "522228375462",
+        message: "¡Hola! Quiero hacer un pedido 🌮 Me gustaria adquirir esta pagina web o ctisar una para mi"
+      };
+
+      /* ── NAVBAR ON SCROLL ── */
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        navbar.classList.toggle('visible', window.scrollY > 80);
+      }, { passive: true });
+
+      /* ── INTERSECTION REVEAL ── */
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const delay = entry.target.dataset.delay || 0;
+          entry.target.style.transitionDelay = `${delay}ms`;
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.reveal').forEach((el, i) => {
+        el.dataset.delay = (i % 5) * 90;
+        observer.observe(el);
+      });
+
+      /* ── HERO PARALLAX (desktop + no-motion check) ── */
+      const heroImg = document.getElementById('hero-img');
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (heroImg && !prefersReduced && window.innerWidth > 768) {
+        window.addEventListener('mousemove', (e) => {
+          requestAnimationFrame(() => {
+            const x = (e.clientX / window.innerWidth  - 0.5) * 10;
+            const y = (e.clientY / window.innerHeight - 0.5) * 10;
+            heroImg.style.transform = `scale(1.08) translate(${x}px, ${y}px)`;
+          });
+        }, { passive: true });
+      }
+
+      /* ── WHATSAPP HANDLER ── */
+      const openWA = (btn) => {
+        btn.disabled = true;
+        btn.style.opacity = '0.75';
+        setTimeout(() => {
+          window.open(
+            `https://wa.me/${CONFIG.phone}?text=${encodeURIComponent(CONFIG.message)}`,
+            '_blank', 'noopener,noreferrer'
+          );
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+          }, 900);
+        }, 350);
+      };
+
+      document.querySelectorAll('.js-order').forEach(btn => {
+        btn.addEventListener('click', () => openWA(btn));
+      });
+
+    })();
+  </script>
+
+</body>
+</html>
